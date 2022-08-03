@@ -9,5 +9,5 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper,Employee> implements EmployeeService {
-    //那子弹装枪
+    //那子弹装枪（实现操作数据库的方法，相当于怎么交互）
 }
