@@ -25,7 +25,7 @@ public class EmployeeController {
     private EmployeeService employeeService;
 
     //员工登录
-    @PostMapping("/login")
+    @PostMapping("/login")//响应请求    
     public R<Employee> login(HttpServletRequest request, @RequestBody Employee employee){//用@RequestBody接收josn格式,
         // request作用是登录成功后，将员工id存到seeion一份，并返回登陆成功，以便随时获取登录用户--request.getseeion
 
@@ -67,4 +67,26 @@ public class EmployeeController {
 
         return R.success(emp);
     }
+
+    /*
+    * 员工退出
+    * */
+    @PostMapping("/logout")
+    public R<String> logout(HttpServletRequest request){
+        //1.清理Session中保存的当前登录员工的id
+        request.getSession().removeAttribute("employee");
+        //cookies基本原理
+        //当一个浏览器访问某web服务器时，web服务器会调用HttpServletResponse的addCookie()方法，
+        // 在响应头中添加一个名叫Set-Cookie的响应字段用于将Cookie返回给浏览器，
+        // 当浏览器第二次访问该web服务器时会自动的将该cookie回传给服务器，来实现用户状态跟踪。
+
+//        session基本原理
+//        当用户发送一个请求到服务器端时，服务器会先检查请求中是否含有sessionid(存在cookie中或者在url中)，
+//        》》如果不存在sessionid(说明是第一次请求)，就会为该请求用户创建一个session对象，并将该session对象的sessionid（放到响应头的set-cookie中，格式set-cookie:sessionid,下次再请求时cookie中就会有一个name为jsessionid的cookie，value就是sessionid）响应给客户端。
+//        》》如果存在sessionid，就会在服务器端查找是否有该sessionid对应的session，如果有就使用，没有就创建一个。
+
+      
+        return R.success("退出成功");
+    }
+
 }
