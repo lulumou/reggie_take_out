@@ -56,7 +56,7 @@ public class DishController {
     public R<Page> page(int page,int pageSize,String name){
         //构造分页构造器对象
         Page<Dish> pageInfo =new Page<>(page,pageSize);//有对应的值，没有需要的属性
-        Page<DishDto> dishDtoPage =new Page<>(page,pageSize);//有需要的属性但没有值
+        Page<DishDto> dishDtoPage =new Page<>();//有需要的属性但没有值
 
 
 
@@ -85,17 +85,64 @@ public class DishController {
             //目的，拿着分类id去查我们的分类表得到分类名称
             //根据id查询分类对象
             Category category = categoryService.getById(categoryId);//分类对象
-            String categoryName = category.getName();
-            //给dto赋值
-            dishDto.setCategoryName(categoryName);
 
+            if(category!=null) {
+                String categoryName = category.getName();
+                //给dto赋值
+                dishDto.setCategoryName(categoryName);
+            }
             return dishDto;
         }).collect(Collectors.toList());//收集起来做成集合
 
-
         dishDtoPage.setRecords(list);
 
-
         return R.success(dishDtoPage);
+    }
+
+    /**
+     * 根据id查询菜品信息和对应的口味信息
+     * @param id
+     * @return
+     */
+    @GetMapping("/{id}")
+    public R<DishDto> get(@PathVariable Long id){//接受url的信息id
+        DishDto dishDto = dishService.getByIdWithFlavor(id);
+        return R.success(dishDto);
+    }
+
+    /**
+     * 修改菜品
+     * @param dishDto
+     * @return
+     */
+    @PutMapping
+    public R<String> update(@RequestBody DishDto dishDto){
+        log.info(dishDto.toString());
+
+
+        dishService.updateWithFlover(dishDto);
+
+
+        return R.success("修改菜品成功！");
+    }
+
+    /**
+     * 根据条件查询对应的菜品数据
+     * @param dish
+     * @return
+     */
+    @GetMapping("/list")
+    public R<List<Dish>> list(Dish dish){
+
+        //构造查询条件
+        LambdaQueryWrapper<Dish> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(dish.getCategoryId()!=null,Dish::getCategoryId,dish.getCategoryId());
+        //添加条件，查询状态为1（起售状态）的菜品
+        queryWrapper.eq(Dish::getStatus,1);
+        //添加排序条件
+        queryWrapper.orderByAsc(Dish::getSort).orderByDesc(Dish::getUpdateTime);
+
+        List<Dish> list = dishService.list(queryWrapper);
+        return R.success(list);
     }
 }
