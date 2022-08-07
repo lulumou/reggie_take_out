@@ -39,7 +39,9 @@ public class LoginCheckFilter implements Filter {
                 "/employee/logout",//退出系统
                 "/backend/**",//静态资源
                 "/front/**",//移动端静态资源
-                "/common/**"//不登录也能上传文件
+                "/common/**",//不登录也能上传文件
+//                "/user/sendMsg",//移动端发送短信
+//                "/user/login"//移动端登陆
         };
 
         //2.判断本次请求是否需要处理
