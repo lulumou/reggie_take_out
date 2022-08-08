@@ -1,7 +1,14 @@
 #端口号
 server:
   port: 8081
+
 spring:
+  mail:
+    host: smtp.qq.com
+    # 你的QQ邮箱，这里为发件人，填自己的即可
+    username: 997447204@qq.com
+    # 你的QQ邮箱授权码
+    password: kdofpwsjprtabeee
   application:
     #指定应用名称
     name: reggie_take_out
@@ -13,12 +20,8 @@ spring:
       username: root
       password: lujiahao
 
-#mail:
-#  host: smtp.qq.com
-#    # 你的QQ邮箱，这里为发件人，填自己的即可
-#    username: 997447204@qq.com
-#    # 你的QQ邮箱授权码
-#    password: hxgjhdlabosgbega
+
+
 mybatis-plus:
   configuration:
     #在映射实体或者属性时，将数据库中表名和字段名中的下划线去掉，按照驼峰命名法映射
